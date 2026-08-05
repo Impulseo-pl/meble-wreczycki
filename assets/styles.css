@@ -1139,3 +1139,23 @@ footer{background:var(--void)}
   .nav.on-dark .nav-links.open a.btn-ghost,
   .nav.on-dark .nav-links.open a.btn-light{color:var(--ink);border-color:var(--line)}
 }
+
+/* ============================================================
+   NAVBAR CAŁKOWICIE PRZEZROCZYSTY (prośba Agaty, 05.08.2026)
+   Belka nie ma tła, ramki, cienia ani rozmycia w ŻADNYM stanie
+   (także po przewinięciu i na podstronach). Znak firmowy jest
+   wycięty w kole (img/logo.png, przezroczyste rogi), więc w pasku
+   nie zostaje już ciemny prostokąt po zdjęciu logo.
+   Ten blok jest OSTATNI w pliku i domyka kaskadę.
+   ============================================================ */
+.nav,
+.nav.is-stuck,
+.nav.on-dark{
+  background:transparent !important;
+  background-color:transparent !important;
+  border-bottom:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;-webkit-backdrop-filter:none !important;
+}
+.brand,.brand-has-logo{background:transparent}
+.brand-logo{background:transparent;border-radius:50%}
