@@ -6,9 +6,10 @@
 
 :root{
   /* PALETA — jasna, architektoniczna, chłodna */
-  --paper:#F3F1EC;          /* główne tło */
-  --paper-2:#E6E3DB;        /* sekcje alternatywne (chłodny jasny szary) */
-  --paper-3:#E6E3DB;        /* delikatne wypełnienia */
+  --paper:#FAF7F0;          /* główne tło - jasny beż, prawie biały */
+  --paper-2:#F2ECE0;        /* sekcje alternatywne */
+  --paper-3:#EAE3D3;        /* delikatne wypełnienia */
+  --card:#FFFDF8;           /* karty/formularz - beż jaśniejszy od tła */
   --ink:#23211E;            /* tekst główny — chłodny grafit */
   --ink-soft:#43403A;       /* nagłówki drugorzędne */
   --muted:#87837A;          /* tekst poboczny */
@@ -112,7 +113,7 @@ p{max-width:65ch}
 .btn-accent:active{transform:translateY(0);box-shadow:var(--sh-sm)}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
-.btn-light{background:#fff;color:var(--ink);box-shadow:var(--sh-sm)}
+.btn-light{background:var(--card);color:var(--ink);box-shadow:var(--sh-sm)}
 .btn-light:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
 .btn .arr{transition:transform var(--dur) var(--ease)}
 .btn:hover .arr{transform:translateX(4px)}
@@ -153,7 +154,7 @@ p{max-width:65ch}
 .hero-art img{width:100%;height:100%;object-fit:cover}
 .hero-art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(18,24,28,.28))}
 .hero-badge{position:absolute;left:var(--space-5);bottom:var(--space-5);z-index:2;
-  background:rgba(252,252,251,.94);backdrop-filter:blur(4px);
+  background:rgba(250,247,240,.94);backdrop-filter:blur(4px);
   border-radius:var(--r-md);padding:var(--space-4) var(--space-5);box-shadow:var(--sh-md);max-width:78%}
 .hero-badge strong{display:block;font-family:var(--font-display);font-size:1rem;letter-spacing:-.01em}
 .hero-badge span{font-size:var(--text-sm);color:var(--muted)}
@@ -244,7 +245,7 @@ p{max-width:65ch}
 
 /* ---------- SERVICES (zakres) ---------- */
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--space-5)}
-.svc{background:#fff;border:var(--hairline);border-radius:var(--r-md);padding:var(--space-7) var(--space-6);
+.svc{background:var(--card);border:var(--hairline);border-radius:var(--r-md);padding:var(--space-7) var(--space-6);
   transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),border-color var(--dur) var(--ease);
   position:relative;overflow:hidden}
 .svc::before{content:"";position:absolute;left:0;top:0;width:3px;height:0;background:var(--accent);transition:height var(--dur) var(--ease)}
@@ -303,7 +304,7 @@ p{max-width:65ch}
 /* ---------- TRUST / WIARYGODNOŚĆ ---------- */
 .trust{background:var(--paper-2)}
 .trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-5);margin-top:var(--space-7)}
-.trust-card{background:#fff;border-radius:var(--r-md);padding:var(--space-7) var(--space-6);box-shadow:var(--sh-sm);border-top:3px solid var(--accent)}
+.trust-card{background:var(--card);border-radius:var(--r-md);padding:var(--space-7) var(--space-6);box-shadow:var(--sh-sm);border-top:3px solid var(--accent)}
 .trust-card .big{font-family:var(--font-display);font-size:clamp(1.8rem,1.3rem + 1.6vw,2.6rem);font-weight:800;letter-spacing:-.02em;color:var(--ink);line-height:1}
 .trust-card h3{font-size:1.12rem;margin:var(--space-3) 0 var(--space-2)}
 .trust-card p{color:var(--muted);font-size:var(--text-base);line-height:1.55}
@@ -327,12 +328,12 @@ p{max-width:65ch}
 .info-row .val{font-weight:600;font-size:var(--text-base);margin-top:2px}
 .info-row a.val:hover{color:var(--accent)}
 .map{border:none;border-radius:var(--r-lg);box-shadow:var(--sh-md);width:100%;height:100%;min-height:380px;filter:grayscale(.2) contrast(1.02)}
-.form{background:#fff;border:var(--hairline);border-radius:var(--r-lg);padding:clamp(24px,3vw,40px);box-shadow:var(--sh-sm)}
+.form{background:var(--card);border:var(--hairline);border-radius:var(--r-lg);padding:clamp(24px,3vw,40px);box-shadow:var(--sh-sm)}
 .form .fld{margin-bottom:var(--space-5)}
 .form label{display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-2)}
 .form input,.form textarea{width:100%;font-family:inherit;font-size:var(--text-base);color:var(--ink);
   padding:var(--space-4);border:var(--hairline);border-radius:var(--r-sm);background:var(--paper);transition:border-color var(--dur)}
-.form input:focus,.form textarea:focus{outline:none;border-color:var(--accent);background:#fff}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--accent);background:var(--card)}
 .form textarea{resize:vertical;min-height:120px}
 .form .note{font-size:var(--text-sm);color:var(--muted);margin-top:var(--space-3)}
 
@@ -802,7 +803,7 @@ footer{view-transition-name:mt-foot}
 
 
 /* === auto-paleta z marki klienta (źródło: logo) === */
-:root{--accent:#B2572B;--accent-d:#9B4212;--accent-soft:rgba(178,87,43,0.10);--paper:#FFF9F6;--paper-2:#F8EEE9;--paper-3:#F1E3DD;--ink:#2A1D17;--ink-soft:#54433C;--muted:#867872;--line:rgba(42,29,23,.12);}
+:root{--accent:#B2572B;--accent-d:#9B4212;--accent-soft:rgba(178,87,43,0.10);--paper:#FAF7F0;--paper-2:#F2ECE0;--paper-3:#EAE3D3;--ink:#26211B;--ink-soft:#4A4339;--muted:#867D6E;--line:rgba(38,33,27,.14);}
 .btn-accent{color:#fff}
 .nav .nav-links a.btn-accent{color:#fff}
 .btn-accent[data-accent-d],.cta-d .btn-accent{color:#fff}
@@ -829,13 +830,16 @@ footer{view-transition-name:mt-foot}
   --led-warm:#EDE7FF;       /* poświata LED (lekko fioletowa) */
   --void:#07060D;           /* czarna ściana z instalacji */
   --void-2:#0F0C1A;
-  --paper:#FCFAFF;
-  --paper-2:#F3EEFC;
-  --paper-3:#EBE3F8;
-  --ink:#241E33;
-  --ink-soft:#443B5C;
-  --muted:#6B6285;
-  --line:rgba(36,30,51,.13);
+  /* JASNE TŁA — beż „prawie biały" (prośba Agaty 05.08.2026: koniec z czystą bielą).
+     Ciepły, piaskowy odcień pasuje do drewna z realizacji i studzi fiolet. */
+  --paper:#FAF7F0;          /* główne tło strony */
+  --paper-2:#F2ECE0;        /* sekcje alternatywne */
+  --paper-3:#EAE3D3;        /* delikatne wypełnienia */
+  --card:#FFFDF8;           /* karty/formularz - jaśniejszy beż zamiast czystej bieli */
+  --ink:#26211B;            /* tekst - ciepły grafit zamiast fioletowego */
+  --ink-soft:#4A4339;
+  --muted:#867D6E;
+  --line:rgba(38,33,27,.14);
   --dark:#0F0C1A;
 }
 
