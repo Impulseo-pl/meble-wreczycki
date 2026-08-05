@@ -808,10 +808,15 @@ footer{view-transition-name:mt-foot}
 .btn-accent[data-accent-d],.cta-d .btn-accent{color:#fff}
 
 /* ============================================================
-   SKÓRKA „LAMELE + FIOLET" — prośba Agaty (05.08.2026)
-   Inspiracja: zdjęcie właściciela na tle drewnianej ścianki
-   lamelowej. Pastelowy fiolet jako akcent, zakładki odsłaniane
-   zza pionowych listew, galeria z powiększaniem.
+   SKÓRKA „INSTALACJA ŚWIETLNA" — prośba Agaty (05.08.2026, v2)
+   Opis od Agaty: postać stoi na środku nowoczesnej instalacji
+   świetlnej; tło to duża CZARNA ściana, zza pleców rozchodzą się
+   promieniście BIAŁE świetlówki LED (efekt skrzydeł / promieni),
+   postać jest w centrum kompozycji.
+   Przełożenie na stronę: hero = czarna ściana + wachlarz świecących
+   świetlówek, główny napis dokładnie w centrum (na miejscu postaci).
+   Zakładki nadal wyłaniają się zza świecących pasków. Pastelowy
+   fiolet trzyma poświatę LED (poprzednia prośba Agaty o kolor).
    Ten blok jest OSTATNI w pliku - wygrywa kaskadę nad auto-paletą.
    ============================================================ */
 :root{
@@ -820,6 +825,10 @@ footer{view-transition-name:mt-foot}
   --accent-soft:rgba(122,90,190,.12);
   --lilac:#C7B6EE;
   --lilac-2:#EDE6FB;
+  --led:#FFFFFF;            /* światło świetlówki */
+  --led-warm:#EDE7FF;       /* poświata LED (lekko fioletowa) */
+  --void:#07060D;           /* czarna ściana z instalacji */
+  --void-2:#0F0C1A;
   --paper:#FCFAFF;
   --paper-2:#F3EEFC;
   --paper-3:#EBE3F8;
@@ -827,7 +836,7 @@ footer{view-transition-name:mt-foot}
   --ink-soft:#443B5C;
   --muted:#6B6285;
   --line:rgba(36,30,51,.13);
-  --dark:#2A2340;
+  --dark:#0F0C1A;
 }
 
 /* --- HERO: napis na środku ekranu --- */
@@ -839,20 +848,80 @@ footer{view-transition-name:mt-foot}
 .hero-center .hero-actions{justify-content:center}
 .hero-center h1{text-wrap:balance}
 
-/* --- HERO: warstwa lameli (jak ścianka za plecami) --- */
-.hero-slats{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:repeating-linear-gradient(90deg,
-    rgba(20,14,34,.34) 0px, rgba(20,14,34,.34) 3px,
-    rgba(20,14,34,0) 3px, rgba(20,14,34,0) 34px);
-  mask-image:linear-gradient(90deg,#000 0%,transparent 26%,transparent 74%,#000 100%);
-  -webkit-mask-image:linear-gradient(90deg,#000 0%,transparent 26%,transparent 74%,#000 100%)}
 .hero-center h1 em{font-style:normal;color:var(--lilac)}
 
+/* ============================================================
+   HERO = INSTALACJA ŚWIETLNA (czarna ściana + promieniste LED-y)
+   Zdjęcie zostaje pod spodem jako ledwo widoczna tekstura wnętrza -
+   dzięki temu tło jest czarne jak na zdjęciu od Agaty, ale nie płaskie.
+   ⛔ Zdjęcia hero NIE ruszamy geometrycznie (shimmer) - tylko jasność.
+   ============================================================ */
+.hero-led{background:var(--void)}
+.hero-led>img{filter:brightness(.24) saturate(.62) contrast(1.08)}
+.hero-led::after{background:
+  radial-gradient(115% 88% at 50% 66%, rgba(9,7,18,.62) 0%, rgba(8,6,15,.90) 46%, rgba(6,5,11,.98) 78%, #05040A 100%)}
+
+.hero-rays{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;
+  contain:paint}
+/* pojedyncza świetlówka: wąski pasek światła bijący z punktu za napisem */
+.hero-rays i{position:absolute;left:50%;top:94%;display:block;
+  width:clamp(3px,.36vw,6px);height:var(--l,90%);
+  transform-origin:50% 0;
+  transform:translateX(-50%) rotate(calc(180deg + var(--a)));
+  background:linear-gradient(180deg,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,.96) 34%,
+    rgba(243,238,255,.80) 62%,
+    rgba(216,201,252,.42) 84%,
+    rgba(186,166,244,0) 100%);
+  box-shadow:0 0 14px rgba(255,252,255,.85), 0 0 40px rgba(178,150,248,.55), 0 0 90px rgba(124,96,206,.30);
+  border-radius:999px;opacity:1}
+/* rozświetlony punkt zbiegu - tam, gdzie na zdjęciu stoi właściciel */
+.ray-core{position:absolute;left:50%;top:94%;width:min(92vw,1000px);height:min(92vw,1000px);
+  transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,
+    rgba(226,214,255,.34) 0%, rgba(146,114,232,.20) 30%, rgba(10,8,20,0) 66%)}
+/* czytelność napisu: cień tylko tuż pod literami, promienie zostają widoczne dookoła */
+.hero-center .hero-copy{position:relative}
+.hero-center .hero-copy::before{content:"";position:absolute;z-index:-1;
+  left:50%;top:46%;transform:translate(-50%,-50%);
+  width:118%;height:150%;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,
+    rgba(7,5,13,.72) 0%, rgba(7,5,13,.40) 46%, rgba(7,5,13,0) 76%)}
+.hero-led h1{text-shadow:0 2px 30px rgba(6,4,12,.85)}
+.hero-led .lead{text-shadow:0 1px 18px rgba(6,4,12,.8)}
+.hero-led .btn-accent{box-shadow:0 0 26px rgba(140,110,224,.45)}
+/* wachlarz „rozwija się" raz, po wejściu na stronę (jak zapalane świetlówki) */
+@media(prefers-reduced-motion:no-preference){
+  .hero-rays i{animation:ledOn .95s cubic-bezier(.2,.8,.3,1) both;
+    animation-delay:calc(.12s + var(--i,0) * .07s)}
+  @keyframes ledOn{
+    from{opacity:0;transform:translateX(-50%) rotate(calc(180deg + var(--a) * .34)) scaleY(.55)}
+    to{opacity:.92;transform:translateX(-50%) rotate(calc(180deg + var(--a))) scaleY(1)}
+  }
+  .ray-core{animation:coreOn 1.5s ease both .2s}
+  @keyframes coreOn{from{opacity:0}to{opacity:1}}
+}
+@media(max-width:680px){
+  .hero-center{align-items:center}
+  .hero-center .wrap{padding-bottom:var(--space-8)}
+  .hero-rays i{top:60%}
+  .ray-core{top:60%}
+}
+
 /* --- ZAKŁADKI ZA LISTWAMI (żaluzja) --- */
-.slatnav{padding-block:var(--space-9);background:
-  linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 100%)}
-.slatnav .head{text-align:center;margin-bottom:var(--space-7)}
-.slatnav .head .eyebrow{justify-content:center}
+.slatnav{padding-block:var(--space-9);position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(124,96,206,.20) 0%, rgba(10,8,20,0) 62%),
+    linear-gradient(180deg,var(--void) 0%, var(--void-2) 55%, var(--void) 100%)}
+.slatnav .head{text-align:center;margin-bottom:var(--space-7);position:relative;z-index:2}
+.slatnav .head .eyebrow{justify-content:center;color:var(--lilac)}
+.slatnav .head .eyebrow::before{background:var(--lilac)}
+.slatnav .head h2{color:#fff}
+.slatnav .head p{color:rgba(255,255,255,.72);margin-inline:auto}
+.slatnav .slat-row{position:relative;z-index:2}
+/* napis stoi PRZED świetlówkami (jak postać przed instalacją) - inaczej światło zjada litery */
+.slatnav .slat-ttl{z-index:4}
 .slat-row{display:flex;gap:10px;height:clamp(320px,54svh,460px)}
 .slat{position:relative;flex:1 1 0;overflow:hidden;border-radius:var(--r-md);
   text-decoration:none;isolation:isolate;border:1px solid rgba(36,30,51,.14);
@@ -860,7 +929,9 @@ footer{view-transition-name:mt-foot}
 .slat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   transform:scale(1.04);transition:transform .8s cubic-bezier(.22,.75,.3,1);z-index:0}
 .slat-veil{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(180deg,rgba(28,20,48,.20) 0%,rgba(28,20,48,.80) 100%)}
+  background:linear-gradient(180deg,rgba(8,6,16,.52) 0%,rgba(8,6,16,.88) 100%);
+  transition:opacity .6s ease}
+.slat:hover .slat-veil,.slat:focus-visible .slat-veil,.slat.peek .slat-veil{opacity:.62}
 .slat-ttl{position:absolute;left:0;right:0;bottom:0;z-index:2;
   padding:var(--space-7) var(--space-4);text-align:center;color:#fff;
   background:linear-gradient(0deg,rgba(18,12,32,.88) 0%,rgba(18,12,32,.55) 58%,transparent 100%)}
@@ -872,17 +943,25 @@ footer{view-transition-name:mt-foot}
   transition:opacity .45s ease .18s,transform .45s ease .18s}
 .slat-ttl::after{content:"";display:block;width:0;height:2px;margin:14px auto 0;
   background:var(--lilac);transition:width .5s cubic-bezier(.22,.75,.3,1) .12s}
-/* listwy */
-.blinds{position:absolute;inset:-1px;z-index:3;display:flex;gap:7px;perspective:1000px;
-  mask-image:linear-gradient(180deg,#000 0%,#000 50%,rgba(0,0,0,.34) 76%,rgba(0,0,0,.10) 100%);
-  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 50%,rgba(0,0,0,.34) 76%,rgba(0,0,0,.10) 100%)}
-.blinds i{flex:1 1 0;display:block;transform-origin:left center;
-  background:linear-gradient(90deg,rgba(28,20,50,.88) 0%,rgba(58,45,100,.66) 42%,rgba(104,84,166,.52) 62%,rgba(28,20,50,.88) 100%);
-  box-shadow:inset -1px 0 0 rgba(199,182,238,.30),3px 0 9px rgba(18,12,32,.34);
-  transition:transform .62s cubic-bezier(.22,.75,.3,1),opacity .5s ease;
+/* ŚWIETLÓWKI — pionowe paski światła na czarnym tle (jak w instalacji ze zdjęcia).
+   Najazd = świetlówki rozjeżdżają się na boki i przygasają, odsłaniając zdjęcie. */
+.blinds{position:absolute;inset:-1px;z-index:3;display:flex;justify-content:space-evenly;
+  align-items:stretch;padding:0 6%;
+  background:linear-gradient(180deg,rgba(6,5,12,.30) 0%,rgba(6,5,12,.52) 100%);
+  transition:background .6s ease;
+  mask-image:linear-gradient(180deg,#000 0%,#000 58%,rgba(0,0,0,.42) 82%,rgba(0,0,0,.08) 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 58%,rgba(0,0,0,.42) 82%,rgba(0,0,0,.08) 100%)}
+.blinds i{display:block;width:clamp(2px,.3vw,4px);flex:none;border-radius:999px;
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.96) 0%, rgba(238,232,255,.86) 46%,
+    rgba(206,190,250,.55) 78%, rgba(186,166,244,.18) 100%);
+  box-shadow:0 0 10px rgba(236,228,255,.72), 0 0 28px rgba(146,114,232,.42);
+  transition:transform .62s cubic-bezier(.22,.75,.3,1),opacity .5s ease,box-shadow .5s ease;
   transition-delay:calc(var(--b,0) * .045s)}
+.slat:hover .blinds,.slat:focus-visible .blinds,.slat.peek .blinds{background:transparent}
 .slat:hover .blinds i,.slat:focus-visible .blinds i,.slat.peek .blinds i{
-  transform:rotateY(-74deg);opacity:.12}
+  transform:translateX(calc((var(--b,0) - 2.5) * 42px)) scaleY(.82);opacity:.14;
+  box-shadow:0 0 6px rgba(236,228,255,.3)}
 .slat:hover,.slat:focus-visible{flex-grow:1.55;box-shadow:0 18px 44px rgba(36,30,51,.22)}
 .slat:hover img,.slat:focus-visible img{transform:scale(1)}
 .slat:hover .slat-ttl small,.slat:focus-visible .slat-ttl small{opacity:1;transform:none}
@@ -894,17 +973,52 @@ footer{view-transition-name:mt-foot}
   .blinds{gap:5px}
   .slat-ttl{padding:var(--space-5) var(--space-4)}
 }
+/* DOTYK (telefon/tablet - brak najechania): świetlówki od razu lekko rozsunięte
+   i przygaszone, żeby było widać, co jest za nimi. */
 @media(hover:none){
-  .blinds i{transform:rotateY(-70deg);opacity:.16}
+  .blinds{background:transparent}
+  .blinds i{transform:translateX(calc((var(--b,0) - 2.5) * 14px));opacity:.42;
+    box-shadow:0 0 8px rgba(236,228,255,.5)}
+  .slat-veil{opacity:.72}
   .slat-ttl small{opacity:1;transform:none}
   .slat-ttl::after{width:46px}
 }
 
-/* --- WIĘCEJ KOLORU: akcenty fioletu w istniejących sekcjach --- */
-.strip{background:linear-gradient(120deg,#2A2340 0%,#3D2F6B 52%,#2A2340 100%);color:#fff}
+/* --- PASEK HASEŁ: czarna ściana, kreski jak neonowe świetlówki --- */
+.strip{background:
+  radial-gradient(90% 140% at 50% 0%, rgba(124,96,206,.26) 0%, rgba(8,6,15,0) 70%),
+  linear-gradient(120deg,var(--void) 0%, #171029 52%, var(--void) 100%);
+  color:#fff}
 .strip .item .k{color:#fff}
-.strip .item{border-left-color:var(--lilac)}
-.strip .item{border-left:2px solid var(--accent)}
+.strip .item .v{color:rgba(255,255,255,.66)}
+.strip .item{border-left:2px solid var(--lilac);
+  box-shadow:inset 2px 0 12px -4px rgba(199,182,238,.75)}
+
+/* --- PROMIENIE ŚWIATŁA na nagłówkach podstron i w CTA (spójnie z hero) --- */
+.pagehead::after{z-index:0;background:
+  radial-gradient(110% 110% at 50% 118%, rgba(10,8,20,.40) 0%, rgba(8,6,15,.82) 58%, rgba(6,5,11,.94) 100%)}
+.pagehead img{filter:brightness(.46) saturate(.78)}
+/* uwaga: .cta::before istnieje wyżej jako okrągła plama (360x360, border-radius:50%) -
+   tu MUSIMY wyzerować jej wymiary, inaczej promienie wylądowałyby w kółku. */
+.pagehead::before,.cta::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  width:auto;height:auto;border-radius:0;opacity:1;
+  background:repeating-conic-gradient(from 208deg at 50% 116%,
+    rgba(255,255,255,.30) 0deg .22deg,
+    rgba(198,180,255,.10) .22deg .5deg,
+    rgba(0,0,0,0) .5deg 5.6deg);
+  mask-image:radial-gradient(78% 108% at 50% 116%, #000 12%, rgba(0,0,0,.55) 52%, transparent 84%);
+  -webkit-mask-image:radial-gradient(78% 108% at 50% 116%, #000 12%, rgba(0,0,0,.55) 52%, transparent 84%)}
+.cta{position:relative;overflow:hidden;background:
+  radial-gradient(100% 120% at 50% 120%, rgba(124,96,206,.28) 0%, rgba(8,6,15,0) 66%),
+  linear-gradient(180deg,var(--void-2) 0%, var(--void) 100%)}
+.cta .wrap{position:relative;z-index:2}
+.cta h2{color:#fff}
+.cta .eyebrow{color:var(--lilac)}
+.cta .eyebrow::before{background:var(--lilac)}
+.cta p{color:rgba(255,255,255,.76)}
+footer{background:var(--void)}
+.foot-bot a.foot-credit{color:var(--lilac);border-bottom-color:rgba(199,182,238,.42)}
+.foot-bot a.foot-credit:hover{color:#fff;border-bottom-color:#fff}
 .gateways-band{background:var(--paper-2)}
 .gateway .g-ttl{border-bottom:2px solid transparent;transition:border-color .4s}
 .gateway:hover .g-ttl{border-bottom-color:var(--lilac)}
