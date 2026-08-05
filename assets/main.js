@@ -476,3 +476,100 @@
 
 /* === licznik otwarć demo (buy-signal) + geo === */
 (function(){try{if(String(location.protocol).indexOf('http')!==0)return;try{if(/[?&#]team=1/.test(location.search+location.hash)){localStorage.setItem('nb_team','1');}}catch(e){}try{if(localStorage.getItem('nb_team')==='1')return;}catch(e){}if((document.referrer||'').indexOf('crm-newbeginning')>-1)return;if(sessionStorage.getItem('_dv'))return;sessionStorage.setItem('_dv','1');var seg=(location.pathname.split('/').filter(Boolean)[0])||'';var base=location.origin+(seg?('/'+seg):'');var ua='';try{ua=(navigator.userAgent||'').slice(0,300);}catch(e){}var EP='https://zngfubfinbojfgaxdrbf.supabase.co/rest/v1/demo_views';var KEY='sb_publishable_MWwoyGlSCWnJ4awtOPF0ow_ZVS0Y8qK';function send(g){try{fetch(EP,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=minimal'},body:JSON.stringify({demo_url:base,page:location.pathname,referrer:(document.referrer||null),user_agent:(ua||null),ip:(g&&g.ip)||null,country:(g&&g.cc)||null,city:(g&&g.city)||null})}).catch(function(){});}catch(e){}}var done=false;function once(g){if(done)return;done=true;send(g);}try{var t=setTimeout(function(){once(null);},1500);fetch('https://ipwho.is/?fields=ip,success,country_code,city',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){clearTimeout(t);once(d&&d.success!==false?{ip:d.ip,cc:d.country_code,city:d.city}:null);}).catch(function(){clearTimeout(t);once(null);});}catch(e){once(null);}}catch(e){}})();
+
+/* ============================================================
+   INTERAKCJA „LAMELE + GALERIA" (05.08.2026, prośba Agaty)
+   1) żaluzje zakładek mrugają raz, gdy sekcja wjedzie w widok
+   2) zdjęcia w galerii otwierają się na pełny ekran (strzałki, ESC)
+   Wszystko w try/catch - awaria = strona wygląda jak wcześniej.
+   ============================================================ */
+(function(){
+  try{
+    /* --- 1. podpowiedź: żaluzje uchylają się na moment --- */
+    var row = document.querySelector('.slat-row');
+    if (row && window.matchMedia('(hover:hover)').matches && window.IntersectionObserver){
+      var shown = false;
+      var io = new IntersectionObserver(function(ents){
+        ents.forEach(function(e){
+          if (!e.isIntersecting || shown) return;
+          shown = true;
+          var slats = row.querySelectorAll('.slat');
+          slats.forEach(function(s,i){
+            setTimeout(function(){
+              s.classList.add('peek');
+              setTimeout(function(){ s.classList.remove('peek'); }, 1150);
+            }, 220 + i*160);
+          });
+          io.disconnect();
+        });
+      }, {threshold:.35});
+      io.observe(row);
+    }
+
+    /* --- 2. lightbox galerii --- */
+    var nodes = Array.prototype.slice.call(
+      document.querySelectorAll('.gallery .tile img, .gallery-masonry .m-tile img'));
+    if (!nodes.length) return;
+
+    var box = document.createElement('div');
+    box.className = 'lb';
+    box.innerHTML =
+      '<button class="lb-x" aria-label="Zamknij">✕</button>' +
+      '<button class="lb-btn lb-prev" aria-label="Poprzednie">‹</button>' +
+      '<img alt="">' +
+      '<button class="lb-btn lb-next" aria-label="Następne">›</button>' +
+      '<div class="lb-cap"></div>';
+    document.body.appendChild(box);
+
+    var big = box.querySelector('img');
+    var cap = box.querySelector('.lb-cap');
+    var idx = 0;
+
+    function label(n){
+      var tile = n.closest('.tile') || n.closest('.m-tile');
+      var c = tile && tile.querySelector('.cap');
+      var t = c ? (c.childNodes[0] ? c.childNodes[0].textContent : c.textContent) : (n.getAttribute('alt') || '');
+      return (t || '').trim();
+    }
+    function show(i){
+      idx = (i + nodes.length) % nodes.length;
+      var n = nodes[idx];
+      big.src = n.currentSrc || n.src;
+      big.alt = n.getAttribute('alt') || '';
+      var t = label(n);
+      cap.innerHTML = (t ? '<b>' + t + '</b> · ' : '') + (idx + 1) + ' / ' + nodes.length;
+    }
+    function open(i){ show(i); box.classList.add('on'); document.body.style.overflow = 'hidden'; }
+    function close(){ box.classList.remove('on'); document.body.style.overflow = ''; }
+
+    nodes.forEach(function(n,i){
+      var tile = n.closest('.tile') || n.closest('.m-tile') || n;
+      tile.addEventListener('click', function(){ open(i); });
+      tile.setAttribute('tabindex','0');
+      tile.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(i); }
+      });
+    });
+
+    box.querySelector('.lb-x').addEventListener('click', close);
+    box.querySelector('.lb-prev').addEventListener('click', function(e){ e.stopPropagation(); show(idx-1); });
+    box.querySelector('.lb-next').addEventListener('click', function(e){ e.stopPropagation(); show(idx+1); });
+    box.addEventListener('click', function(e){ if (e.target === box) close(); });
+    document.addEventListener('keydown', function(e){
+      if (!box.classList.contains('on')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(idx-1);
+      if (e.key === 'ArrowRight') show(idx+1);
+    });
+
+    /* przesuwanie palcem */
+    var x0 = null;
+    box.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+    box.addEventListener('touchend', function(e){
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 45) show(idx + (dx < 0 ? 1 : -1));
+      x0 = null;
+    }, {passive:true});
+  }catch(e){}
+})();

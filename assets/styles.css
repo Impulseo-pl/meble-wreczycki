@@ -806,3 +806,134 @@ footer{view-transition-name:mt-foot}
 .btn-accent{color:#fff}
 .nav .nav-links a.btn-accent{color:#fff}
 .btn-accent[data-accent-d],.cta-d .btn-accent{color:#fff}
+
+/* ============================================================
+   SKÓRKA „LAMELE + FIOLET" — prośba Agaty (05.08.2026)
+   Inspiracja: zdjęcie właściciela na tle drewnianej ścianki
+   lamelowej. Pastelowy fiolet jako akcent, zakładki odsłaniane
+   zza pionowych listew, galeria z powiększaniem.
+   Ten blok jest OSTATNI w pliku - wygrywa kaskadę nad auto-paletą.
+   ============================================================ */
+:root{
+  --accent:#6C4FB0;
+  --accent-d:#573D93;
+  --accent-soft:rgba(122,90,190,.12);
+  --lilac:#C7B6EE;
+  --lilac-2:#EDE6FB;
+  --paper:#FCFAFF;
+  --paper-2:#F3EEFC;
+  --paper-3:#EBE3F8;
+  --ink:#241E33;
+  --ink-soft:#443B5C;
+  --muted:#6B6285;
+  --line:rgba(36,30,51,.13);
+  --dark:#2A2340;
+}
+
+/* --- HERO: napis na środku ekranu --- */
+.hero-center{justify-content:center;text-align:center}
+.hero-center .wrap{display:flex;justify-content:center}
+.hero-center .hero-copy{max-width:940px;margin:0 auto}
+.hero-center .eyebrow{justify-content:center}
+.hero-center .lead{max-width:56ch;margin-left:auto;margin-right:auto}
+.hero-center .hero-actions{justify-content:center}
+.hero-center h1{text-wrap:balance}
+
+/* --- HERO: warstwa lameli (jak ścianka za plecami) --- */
+.hero-slats{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(90deg,
+    rgba(20,14,34,.34) 0px, rgba(20,14,34,.34) 3px,
+    rgba(20,14,34,0) 3px, rgba(20,14,34,0) 34px);
+  mask-image:linear-gradient(90deg,#000 0%,transparent 26%,transparent 74%,#000 100%);
+  -webkit-mask-image:linear-gradient(90deg,#000 0%,transparent 26%,transparent 74%,#000 100%)}
+.hero-center h1 em{font-style:normal;color:var(--lilac)}
+
+/* --- ZAKŁADKI ZA LISTWAMI (żaluzja) --- */
+.slatnav{padding-block:var(--space-9);background:
+  linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 100%)}
+.slatnav .head{text-align:center;margin-bottom:var(--space-7)}
+.slatnav .head .eyebrow{justify-content:center}
+.slat-row{display:flex;gap:10px;height:clamp(320px,54svh,460px)}
+.slat{position:relative;flex:1 1 0;overflow:hidden;border-radius:var(--r-md);
+  text-decoration:none;isolation:isolate;border:1px solid rgba(36,30,51,.14);
+  transition:flex-grow .6s cubic-bezier(.22,.75,.3,1),box-shadow .5s}
+.slat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(1.04);transition:transform .8s cubic-bezier(.22,.75,.3,1);z-index:0}
+.slat-veil{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(28,20,48,.20) 0%,rgba(28,20,48,.80) 100%)}
+.slat-ttl{position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:var(--space-7) var(--space-4);text-align:center;color:#fff;
+  background:linear-gradient(0deg,rgba(18,12,32,.88) 0%,rgba(18,12,32,.55) 58%,transparent 100%)}
+.slat-ttl em{display:block;font-style:normal;font-family:var(--font-display);
+  font-weight:700;font-size:clamp(1.25rem,1rem + .95vw,1.95rem);letter-spacing:.01em;
+  text-shadow:0 2px 6px rgba(16,10,28,.95),0 6px 26px rgba(16,10,28,.8)}
+.slat-ttl small{display:block;margin-top:6px;font-size:.82rem;letter-spacing:.02em;
+  color:var(--lilac);opacity:0;transform:translateY(8px);
+  transition:opacity .45s ease .18s,transform .45s ease .18s}
+.slat-ttl::after{content:"";display:block;width:0;height:2px;margin:14px auto 0;
+  background:var(--lilac);transition:width .5s cubic-bezier(.22,.75,.3,1) .12s}
+/* listwy */
+.blinds{position:absolute;inset:-1px;z-index:3;display:flex;gap:7px;perspective:1000px;
+  mask-image:linear-gradient(180deg,#000 0%,#000 50%,rgba(0,0,0,.34) 76%,rgba(0,0,0,.10) 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 50%,rgba(0,0,0,.34) 76%,rgba(0,0,0,.10) 100%)}
+.blinds i{flex:1 1 0;display:block;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(28,20,50,.88) 0%,rgba(58,45,100,.66) 42%,rgba(104,84,166,.52) 62%,rgba(28,20,50,.88) 100%);
+  box-shadow:inset -1px 0 0 rgba(199,182,238,.30),3px 0 9px rgba(18,12,32,.34);
+  transition:transform .62s cubic-bezier(.22,.75,.3,1),opacity .5s ease;
+  transition-delay:calc(var(--b,0) * .045s)}
+.slat:hover .blinds i,.slat:focus-visible .blinds i,.slat.peek .blinds i{
+  transform:rotateY(-74deg);opacity:.12}
+.slat:hover,.slat:focus-visible{flex-grow:1.55;box-shadow:0 18px 44px rgba(36,30,51,.22)}
+.slat:hover img,.slat:focus-visible img{transform:scale(1)}
+.slat:hover .slat-ttl small,.slat:focus-visible .slat-ttl small{opacity:1;transform:none}
+.slat:hover .slat-ttl::after,.slat:focus-visible .slat-ttl::after{width:56px}
+@media(max-width:860px){
+  .slat-row{flex-direction:column;height:auto;gap:10px}
+  .slat{flex:0 0 auto;height:clamp(150px,26svh,200px)}
+  .slat:hover,.slat:focus-visible{flex-grow:0}
+  .blinds{gap:5px}
+  .slat-ttl{padding:var(--space-5) var(--space-4)}
+}
+@media(hover:none){
+  .blinds i{transform:rotateY(-70deg);opacity:.16}
+  .slat-ttl small{opacity:1;transform:none}
+  .slat-ttl::after{width:46px}
+}
+
+/* --- WIĘCEJ KOLORU: akcenty fioletu w istniejących sekcjach --- */
+.strip{background:linear-gradient(120deg,#2A2340 0%,#3D2F6B 52%,#2A2340 100%);color:#fff}
+.strip .item .k{color:#fff}
+.strip .item{border-left-color:var(--lilac)}
+.strip .item{border-left:2px solid var(--accent)}
+.gateways-band{background:var(--paper-2)}
+.gateway .g-ttl{border-bottom:2px solid transparent;transition:border-color .4s}
+.gateway:hover .g-ttl{border-bottom-color:var(--lilac)}
+.split-copy .eyebrow,.head .eyebrow{color:var(--accent)}
+.tile{border:1px solid rgba(108,79,176,.14)}
+
+/* --- GALERIA: zdjęcia klikalne, powiększenie na pełny ekran --- */
+.tile,.m-tile{cursor:zoom-in}
+.tile::after{content:"";position:absolute;z-index:3;right:12px;top:12px;width:34px;height:34px;
+  border-radius:50%;background:rgba(36,30,51,.5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4M11 8v6M8 11h6'/%3E%3C/svg%3E") center/18px no-repeat;
+  opacity:0;transform:scale(.8);transition:opacity .35s,transform .35s;backdrop-filter:blur(4px)}
+.tile:hover::after{opacity:1;transform:none}
+.lb{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+  background:rgba(24,18,40,.94);padding:clamp(12px,3vw,40px)}
+.lb.on{display:flex;animation:lbIn .3s ease both}
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+.lb img{max-width:100%;max-height:86svh;border-radius:var(--r-md);
+  box-shadow:0 30px 90px rgba(0,0,0,.6);animation:lbZoom .42s cubic-bezier(.22,.75,.3,1) both}
+@keyframes lbZoom{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.lb-cap{position:absolute;left:0;right:0;bottom:clamp(12px,3vw,28px);text-align:center;
+  color:#fff;font-size:var(--text-sm);letter-spacing:.02em}
+.lb-cap b{color:var(--lilac);font-weight:600}
+.lb-btn{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border:0;
+  border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:1.5rem;cursor:pointer;
+  display:grid;place-items:center;transition:background .3s,transform .3s}
+.lb-btn:hover{background:var(--accent);transform:translateY(-50%) scale(1.08)}
+.lb-prev{left:clamp(8px,2vw,28px)}.lb-next{right:clamp(8px,2vw,28px)}
+.lb-x{position:absolute;top:clamp(10px,2vw,24px);right:clamp(10px,2vw,24px);width:46px;height:46px;
+  border:0;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:1.3rem;
+  cursor:pointer;transition:background .3s}
+.lb-x:hover{background:var(--accent)}
+@media(max-width:640px){.lb-btn{width:42px;height:42px}}
