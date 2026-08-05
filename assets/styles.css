@@ -1055,3 +1055,44 @@ footer{background:var(--void)}
   cursor:pointer;transition:background .3s}
 .lb-x:hover{background:var(--accent)}
 @media(max-width:640px){.lb-btn{width:42px;height:42px}}
+
+/* ============================================================
+   GÓRNY PASEK PRZEZROCZYSTY (prośba Agaty, 05.08.2026)
+   „żeby nadal były tam te napisy, ale żeby sam pasek nie był
+   widoczny" - nawigacja przestaje być belką z tłem i leży
+   bezpośrednio na ciemnym hero / nagłówku podstrony.
+   Pasek wraca (przygaszone tło + blur) dopiero po przewinięciu,
+   inaczej na jasnych sekcjach napisy zlałyby się z treścią.
+   Ten blok jest OSTATNI w pliku - wygrywa kaskadę.
+   ============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;
+  background:transparent;
+  border-bottom:0;
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  transition:background .4s ease,box-shadow .4s ease,backdrop-filter .4s ease;
+}
+.nav:not(.is-stuck){box-shadow:none}
+/* napisy leżą na ciemnym tle hero -> jasne, dobrze czytelne */
+.nav:not(.is-stuck) .nav-links a{color:rgba(255,255,255,.88);text-shadow:0 1px 12px rgba(6,4,12,.7)}
+.nav:not(.is-stuck) .nav-links a:hover,
+.nav:not(.is-stuck) .nav-links a.active{color:#fff}
+.nav:not(.is-stuck) .nav-links a::after{background:var(--lilac)}
+.nav:not(.is-stuck) .nav-links a.btn-ghost,
+.nav:not(.is-stuck) .nav-links a.btn-light{color:#fff;border-color:rgba(255,255,255,.45)}
+.nav:not(.is-stuck) .nav-toggle span{background:#fff}
+/* po przewinięciu belka wraca - czytelność na jasnych sekcjach */
+.nav.is-stuck{
+  background:color-mix(in srgb,var(--paper) 92%,transparent);
+  backdrop-filter:saturate(140%) blur(10px);-webkit-backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:var(--hairline);
+}
+/* telefon: rozwinięte menu ma jasne tło - napisy z powrotem ciemne */
+@media(max-width:680px){
+  .nav:not(.is-stuck) .nav-links.open a{color:var(--ink-soft);text-shadow:none}
+  .nav:not(.is-stuck) .nav-links.open a:hover,
+  .nav:not(.is-stuck) .nav-links.open a.active{color:var(--ink)}
+  .nav:not(.is-stuck) .nav-links.open a.btn-accent{color:#fff}
+  .nav:not(.is-stuck) .nav-links.open a.btn-ghost,
+  .nav:not(.is-stuck) .nav-links.open a.btn-light{color:var(--ink);border-color:var(--line)}
+}
