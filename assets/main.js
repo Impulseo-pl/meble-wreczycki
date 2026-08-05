@@ -573,3 +573,37 @@
     }, {passive:true});
   }catch(e){}
 })();
+
+/* ============================================================
+   PASEK ZAWSZE PRZEZROCZYSTY - dopasowanie koloru napisów
+   (prośba Agaty 05.08.2026). Belka nie ma tła na żadnej wysokości
+   strony, więc napisy muszą reagować na to, co pod nią przepływa:
+   klasa `on-dark` = jasne napisy nad ciemną sekcją, brak klasy =
+   ciemne napisy nad jasną. Blok jest addytywny - gdy padnie,
+   strona dalej działa (napisy zostaną w wariancie ciemnym).
+   ============================================================ */
+(function () {
+  try {
+    var nav = document.querySelector('.nav');
+    if (!nav) return;
+    var darkSel = '.hero-cine,.pagehead,.strip,.slatnav,.cta,footer,[data-nav-dark]';
+    var dark = Array.prototype.slice.call(document.querySelectorAll(darkSel));
+    if (!dark.length) return;
+    var ticking = false;
+    function upd() {
+      var mid = (nav.offsetHeight || 72) / 2;
+      var onDark = false;
+      for (var i = 0; i < dark.length; i++) {
+        var r = dark[i].getBoundingClientRect();
+        if (r.top <= mid && r.bottom >= mid) { onDark = true; break; }
+      }
+      nav.classList.toggle('on-dark', onDark);
+      ticking = false;
+    }
+    function req() { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', req, { passive: true });
+    window.addEventListener('load', req);
+    upd();
+  } catch (e) {}
+})();
